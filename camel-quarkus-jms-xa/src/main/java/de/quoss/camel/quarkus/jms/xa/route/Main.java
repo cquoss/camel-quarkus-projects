@@ -1,7 +1,7 @@
 package de.quoss.camel.quarkus.jms.xa.route;
 
-import de.unioninvestment.md.dp.basis.narayana.ConnectionFactoryProxy;
-import de.unioninvestment.md.dp.basis.narayana.NarayanaTransactionHelper;
+import de.quoss.narayana.helper.ConnectionFactoryProxy;
+import de.quoss.narayana.helper.NarayanaTransactionHelper;
 import io.smallrye.common.constraint.Assert;
 import org.apache.activemq.artemis.jms.client.ActiveMQXAConnectionFactory;
 import org.apache.camel.builder.endpoint.EndpointRouteBuilder;
@@ -30,10 +30,14 @@ public class Main extends EndpointRouteBuilder {
 
         final JmsComponent component = ((JmsComponent) getContext().getComponent("jms"));
         component.setTransactionManager(new JtaTransactionManager(ut, tm));
-        component.setConnectionFactory(new ConnectionFactoryProxy(new ActiveMQXAConnectionFactory(), new NarayanaTransactionHelper(tm)));
+        ActiveMQXAConnectionFactory cf = new ActiveMQXAConnectionFactory();
+        // cf.setClientID("client-id");
+        component.setConnectionFactory(new ConnectionFactoryProxy(cf, new NarayanaTransactionHelper(tm)));
+        component.getConfiguration().setSynchronous(true);
 
-        from(jms("topic:foo::bar")).routeId(ROUTE_ID)
-                .to(log("boo"));
+        from(jms("topic:foo").durableSubscriptionName("durable-subscription").subscriptionShared(true)
+                .advanced().receiveTimeout(1000L)).routeId(ROUTE_ID)
+                .to(log("boo")).id(Main.ROUTE_ID + ".log");
 
     }
 

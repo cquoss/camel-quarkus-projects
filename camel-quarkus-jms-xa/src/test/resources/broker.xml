@@ -2,8 +2,14 @@
     <core xmlns="urn:activemq:core">
         <max-disk-usage>95</max-disk-usage>
         <security-enabled>false</security-enabled>
+        <persistence-enabled>false</persistence-enabled>
         <acceptors>
             <acceptor name="netty">tcp://localhost:61616</acceptor>
         </acceptors>
+        <address-settings>
+            <address-setting match="#">
+                <dead-letter-address>DLA</dead-letter-address>
+            </address-setting>
+        </address-settings>
     </core>
 </configuration>

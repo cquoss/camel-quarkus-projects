@@ -4,3 +4,7 @@ target/
 # JetBrains IntelliJ IdeaIU
 .idea/
 *.iml
+
+# RedHat Quarkus
+data/
+quarkus.log*
