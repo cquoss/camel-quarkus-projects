@@ -26,6 +26,7 @@ public class Main extends EndpointRouteBuilder {
         this.ut = Assert.assertNotNull(ut);
     }
 
+    @Override
     public void configure() {
 
         final JmsComponent component = ((JmsComponent) getContext().getComponent("jms"));
