@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.quoss.camel.quarkus</groupId>
-    <artifactId>projects</artifactId>
+    <artifactId>camel-quarkus-projects</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
@@ -18,7 +18,12 @@
         <quarkus.platform.version>3.34.1</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.4</surefire-plugin.version>
-        <quarkiverse-artemis.version>xxx</quarkiverse-artemis.version>
+        <!--
+            For compatibility of Quarkus Artemis JMS and Quarkus check here:
+            https://docs.quarkiverse.io/quarkus-artemis/3.13.x/quarkus-artemis-jms.html#_compatibility
+            NOTE: be aware that version in URL is subject to change
+        -->
+        <quarkus-artemis-jms.version>3.14.1</quarkus-artemis-jms.version>
     </properties>
 
     <dependencyManagement>

@@ -1,29 +1,36 @@
-<project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.quoss.camel.quarkus</groupId>
-        <artifactId>projects</artifactId>
+        <artifactId>camel-quarkus-projects</artifactId>
         <version>1.0</version>
     </parent>
     <artifactId>camel-quarkus-jms-xa</artifactId>
+    <packaging>quarkus</packaging>
     <dependencies>
-        <dependency>
-            <groupId>de.quoss.narayana</groupId>
-            <artifactId>narayana-helper</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>io.quarkiverse.artemis</groupId>
             <artifactId>quarkus-artemis-jms</artifactId>
-            <version>${quarkiverse-artemis.version}</version>
+            <version>${quarkus-artemis-jms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkiverse.messaginghub</groupId>
+            <artifactId>quarkus-pooled-jms</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-narayana-jta</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-endpointdsl</artifactId>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-health</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-jta</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.camel.quarkus</groupId>
@@ -36,12 +43,12 @@
         <dependency>
             <groupId>io.quarkiverse.artemis</groupId>
             <artifactId>quarkus-test-artemis</artifactId>
-            <version>${quarkiverse-artemis.version}</version>
+            <version>${quarkus-artemis-jms.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5</artifactId>
+            <artifactId>quarkus-junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -51,6 +58,10 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>quarkus-maven-plugin</artifactId>

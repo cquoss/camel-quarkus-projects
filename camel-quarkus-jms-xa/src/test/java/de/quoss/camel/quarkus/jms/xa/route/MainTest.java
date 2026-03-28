@@ -3,6 +3,8 @@ package de.quoss.camel.quarkus.jms.xa.route;
 import io.quarkus.artemis.test.ArtemisTestResource;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Destination;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Processor;
@@ -12,14 +14,10 @@ import org.awaitility.core.ConditionTimeoutException;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.jms.core.JmsTemplate;
 
-import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.Message;
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -46,15 +44,15 @@ class MainTest {
         // stop the main route / wait 1 second before doing so
         Assertions.assertNotNull(ctx);
         Thread.sleep(1000L);
-        ctx.getRouteController().stopRoute(Main.ROUTE_ID);
+        ctx.getRouteController().stopRoute(MainRoute.ROUTE_ID);
         // add error producing processor before log node
-        AdviceWith.adviceWith(ctx, Main.ROUTE_ID, a -> {
-            a.weaveById(Main.ROUTE_ID + ".log").before().process(e -> {
+        AdviceWith.adviceWith(ctx, MainRoute.ROUTE_ID, a -> {
+            a.weaveById(MainRoute.ROUTE_ID + ".log").before().process(e -> {
                 throw new RuntimeException("This happens on purpose");
-            }).id(Main.ROUTE_ID + ".process");
+            }).id(MainRoute.ROUTE_ID + ".process");
         });
         // start the main route
-        ctx.getRouteController().startRoute(Main.ROUTE_ID);
+        ctx.getRouteController().startRoute(MainRoute.ROUTE_ID);
         // send message
         JmsTemplate template = new JmsTemplate(cf);
         template.setReceiveTimeout(1000L);
@@ -76,6 +74,7 @@ class MainTest {
             this.cf = cf;
         }
 
+        @Override
         public Boolean call() {
             JmsTemplate template = new JmsTemplate(cf);
             Destination d = cf.createContext().createQueue("DLA");
@@ -87,18 +86,18 @@ class MainTest {
     @AfterEach
     void tearDown() throws Exception {
         // remove process endpoint from main route if configured
-        List<Processor> l = ctx.getRoute(Main.ROUTE_ID).filter(Main.ROUTE_ID + ".process");
+        List<Processor> l = ctx.getRoute(MainRoute.ROUTE_ID).filter(MainRoute.ROUTE_ID + ".process");
         if (l.isEmpty()) {
             // do nothing
         } else {
             // stop the main route
             Assertions.assertNotNull(ctx);
             // remove error producing processor
-            AdviceWith.adviceWith(ctx, Main.ROUTE_ID, a -> {
-                a.weaveById(Main.ROUTE_ID + ".process").remove();
+            AdviceWith.adviceWith(ctx, MainRoute.ROUTE_ID, a -> {
+                a.weaveById(MainRoute.ROUTE_ID + ".process").remove();
             });
             // start the main route
-            ctx.getRouteController().startRoute(Main.ROUTE_ID);
+            ctx.getRouteController().startRoute(MainRoute.ROUTE_ID);
         }
     }
 

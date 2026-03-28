@@ -1,11 +1,10 @@
 package de.quoss.camel.quarkus.jms.xa;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-import org.apache.activemq.artemis.jms.client.ActiveMQXAConnectionFactory;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.jms.Destination;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
+import jakarta.jms.Destination;
 
 @Dependent
 public class TestConfiguration {

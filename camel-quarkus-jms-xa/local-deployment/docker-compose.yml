@@ -1,0 +1,13 @@
+name: camel-quarkus-jms-xa
+
+services:
+  jms:
+    image: dhi.io/activemq-artemis:2.53.0
+    ports:
+      - 61616:61616
+      - 8161:8161
+      - 61613:61613
+    environment:
+      ARTEMIS_USER: admin
+      ARTEMIS_PASSWORD: admin
+
