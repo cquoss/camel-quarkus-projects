@@ -21,7 +21,7 @@ externalDocs:
   description: Find out more about Swagger
   url: https://swagger.io
 servers:
-  - url: https://petstore3.swagger.io/api/v3
+  - url: http://localhost:8080
 tags:
   - name: pet
     description: Everything about your Pets
@@ -74,10 +74,6 @@ paths:
           description: Validation exception
         default:
           description: Unexpected error
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
     post:
       tags:
         - pet
@@ -113,10 +109,6 @@ paths:
           description: Validation exception
         default:
           description: Unexpected error
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
   /pet/findByStatus:
     get:
       tags:
@@ -155,10 +147,6 @@ paths:
           description: Invalid status value
         default:
           description: Unexpected error
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
   /pet/findByTags:
     get:
       tags:
@@ -194,10 +182,6 @@ paths:
           description: Invalid tag value
         default:
           description: Unexpected error
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
   /pet/{petId}:
     get:
       tags:
@@ -229,11 +213,6 @@ paths:
           description: Pet not found
         default:
           description: Unexpected error
-      security:
-        - api_key: []
-        - petstore_auth:
-            - write:pets
-            - read:pets
     post:
       tags:
         - pet
@@ -272,10 +251,6 @@ paths:
           description: Invalid input
         default:
           description: Unexpected error
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
     delete:
       tags:
         - pet
@@ -303,10 +278,6 @@ paths:
           description: Invalid pet value
         default:
           description: Unexpected error
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
   /pet/{petId}/uploadImage:
     post:
       tags:
@@ -347,10 +318,6 @@ paths:
           description: Pet not found
         default:
           description: Unexpected error
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
   /store/inventory:
     get:
       tags:
@@ -371,8 +338,6 @@ paths:
                   format: int32
         default:
           description: Unexpected error
-      security:
-        - api_key: []
   /store/order:
     post:
       tags:
@@ -824,16 +789,3 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/User'
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            "write:pets": modify pets in your account
-            "read:pets": read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header

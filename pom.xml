@@ -48,6 +48,7 @@
     <modules>
         <module>camel-quarkus-jms-xa</module>
         <module>camel-quarkus-rest-openapi</module>
+        <module>camel-quarkus-rest-openapi-swagger-petstore3</module>
     </modules>
 
     <build>
