@@ -3,8 +3,16 @@ target/
 
 # JetBrains IntelliJ IdeaIU
 .idea/
-*.iml
+camel-quarkus-projects.iml
 
 # RedHat Quarkus
-data/
-quarkus.log*
+/data/
+/quarkus.log*
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+/camel-quarkus-jms-xa/.classpath
+/camel-quarkus-jms-xa/.project
+/camel-quarkus-jms-xa/.settings/
