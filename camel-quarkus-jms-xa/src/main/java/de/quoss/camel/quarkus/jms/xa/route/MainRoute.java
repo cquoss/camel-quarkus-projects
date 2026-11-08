@@ -6,7 +6,6 @@ import org.apache.camel.builder.endpoint.EndpointRouteBuilder;
 import org.apache.camel.component.jms.JmsComponent;
 
 import jakarta.transaction.TransactionManager;
-import org.apache.activemq.artemis.jms.client.ActiveMQXAConnectionFactory;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 @ApplicationScoped
@@ -32,7 +31,7 @@ public class MainRoute extends EndpointRouteBuilder {
         // component.getConfiguration().setSynchronous(true);
 
         from(jms("topic:foo").durableSubscriptionName("durable-subscription").subscriptionShared(true)
-                .advanced().receiveTimeout(1000L)).routeId(ROUTE_ID)
+                .transacted(true).advanced().receiveTimeout(1000L)).routeId(ROUTE_ID)
                 .to(log("boo")).id(MainRoute.ROUTE_ID + ".log");
 
     }
